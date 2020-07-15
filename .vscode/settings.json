@@ -1,0 +1,28 @@
+{
+    "files.associations": {
+        "*.inc": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "array": "cpp",
+        "buffer": "cpp",
+        "internet": "cpp",
+        "socket": "cpp",
+        "string_view": "cpp",
+        "rope": "cpp",
+        "slist": "cpp",
+        "bitset": "cpp",
+        "ranges": "cpp",
+        "span": "cpp",
+        "utility": "cpp",
+        "valarray": "cpp",
+        "regex": "cpp",
+        "dynamic_bitset": "cpp",
+        "initializer_list": "cpp",
+        "tuple": "cpp",
+        "*.in": "cpp",
+        "variant": "cpp",
+        "source_location": "cpp",
+        "string": "cpp",
+        "sstream": "cpp"
+    }
+}
