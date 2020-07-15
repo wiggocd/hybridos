@@ -18,7 +18,7 @@ Arch Linux: `qemu` `qemu-arch-extra` [You may have to enable the extra multilib 
 
 
 ## Building
-Please run these commands from the project root!
+Please run these commands from the project root.
 
 To install the required toolchain and cross-compiler for the i686-elf target:
 `make install`
