@@ -1,86 +1,78 @@
 /*
 *   terminal.hpp
+*   Functions and definitions for the command line.
 */
 
-#ifndef TERMINAL
-#define TERMINAL
+#ifndef __TERMINAL
+#define __TERMINAL
 
-#include <stddef.h>
-#include <stdint.h>
 #include "graphics.hpp"
 #include "string.hpp"
+#include "stddef.h"
 
 class Terminal {
     private:
         uint16_t* vga_buffer;
-        uint8_t terminal_color;
-        size_t terminal_width;
-        size_t terminal_height;
-
-        size_t terminal_column;
-        size_t terminal_row;
+        uint8_t color;
+        size_t width;
+        size_t height;
+        unsigned int column;
+        unsigned int row;
     public:
-        void configure(uint8_t color, size_t width, size_t height) {
-            terminal_color = color;
-            terminal_width = width;
-            terminal_height = height;
+        void setcolor(uint8_t _color) {
+            color = _color;
         }
-        
-        void initialize() {
-            vga_buffer = (uint16_t*) 0xB8000;
-            terminal_column = 0;
-            terminal_row = 0;
-            uint16_t entry = vga_entry(' ', terminal_color);
 
-            for (size_t y=0; y < terminal_height; y++) {
-                for (size_t x=0; x < terminal_width; x++) {
-                    const size_t index = y * terminal_width + x;
-                    vga_buffer[index] = entry;
+        void configure(uint8_t _color, size_t _width, size_t _height) {
+            color = _color;
+            width = _width;
+            height = _height;
+        }
+
+        void initialize() {
+            vga_buffer = (uint16_t*) VGA_BUFFER_DEFAULT;
+            column = 0;
+            row = 0;
+            uint16_t entry = vga_entry(' ', color);
+
+            for (size_t y = 0; y < height; y++) {
+                for (size_t x = 0; x < width; x++) {
+                    vga_buffer[y * width + x] = entry;
                 }
             }
         }
 
-        void setcolor(uint8_t color) {
-            terminal_color = color;
-        }
-
-        void putentry(char ch, uint8_t color, size_t x, size_t y) {
-            uint16_t entry = vga_entry(ch, color);
-            const size_t index = y * terminal_width + x;
+        void putentry(uint16_t entry, unsigned int x, unsigned int y) {
+            uint16_t index = y * width + x;
             vga_buffer[index] = entry;
         }
 
-        void putchar(char ch) {
-            putentry(ch, terminal_color, terminal_column, terminal_row);
-            if (++terminal_column > terminal_width - 1) {
-                terminal_column = 0;
-                if (++terminal_row > terminal_height - 1) {
-                    terminal_row = 0;
-                    // Todo: clear screen
+        void putchar(unsigned char ch) {
+            uint16_t entry = vga_entry(ch, color);
+            putentry(entry, column, row);
+            if (++column > width - 1) {
+                column = 0;
+                row++;
+                if (++row > height - 1) {
+                    /* TODO: Impliment scroll later on down the line */
+                    initialize();
                 }
             }
         }
 
         void write(const char* str, size_t len) {
-            for (size_t i=0; i < len; i++)
+            for (size_t i = 0; i < len; i++) {
                 putchar(str[i]);
+            }
         }
 
         void writestring(const char* str) {
             write(str, strlen(str));
         }
 
-        size_t getWidth() {
-            return terminal_width;
-        }
-
-        size_t getHeight() {
-            return terminal_height;
-        }
-
         Terminal() {};
-        Terminal(uint8_t color, size_t width, size_t height) {
-            configure(color, width, height);
+        Terminal(uint8_t _color, size_t _width, size_t _height) {
+            configure(_color, _width, _height);
             initialize();
         }
 };
