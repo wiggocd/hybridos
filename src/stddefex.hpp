@@ -1,6 +1,6 @@
 /*
 *   stddefex.hpp
-*   Extended C++ definitions.
+*   Extended C++ type definitions
 */
 
 #ifndef __STDDEF_EX

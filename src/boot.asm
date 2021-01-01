@@ -1,14 +1,14 @@
 /*
 *   boot.asm
-*   The bootstrap assembly entrypoint to load the kernel.
+*   The bootstrap assembly entrypoint to load the kernel
 */
 
 /*
 *   Boot code synopsis:
 
-1.	Set align, meminfo, flags, magic and checksum for multiboot.
+1.	Set align, meminfo, flags, magic and checksum for multiboot
 2.	Declare multiboot header with .section, alignment 4, assign multiboot properties as long
-3.	Prepare the stack (section .bss), alignment 16, 16KiB stack_bottom, empty stack_top.
+3.	Prepare the stack (section .bss), alignment 16, 16KiB stack_bottom, empty stack_top
 
 _start
 1.	Set global and function type with _start, .type @function [section .text]
@@ -17,7 +17,7 @@ _start
 4.	If the system has returned, disable interrupts, halt with label 1:, and jump to the hlt instruction (1b)
 
 Exit _start:
-	set size of _start to current location (.) minus start, instruction and parameters seperated by comma.
+	Set size of _start to current location (.) minus start, instruction and parameters seperated by comma
 
 */
 

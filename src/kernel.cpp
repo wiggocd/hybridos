@@ -1,6 +1,6 @@
 /*
 *   kernel.cpp
-*   Entrypoint to the kernel.
+*   Entrypoint to the kernel
 */
 
 /*

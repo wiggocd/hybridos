@@ -1,6 +1,6 @@
 /*
 *   graphics.hpp
-*   Graphics/video code.
+*   Graphics/video code
 */
 
 #ifndef __GRAPHICS

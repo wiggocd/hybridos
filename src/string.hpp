@@ -1,6 +1,6 @@
 /*
 *   string.hpp
-*   String-related definitions and functions.
+*   String-related definitions and functions
 */
 
 #ifndef __STRING_EX

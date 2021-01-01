@@ -1,6 +1,6 @@
 /*
 *   terminal.hpp
-*   Functions and definitions for the command line.
+*   Functions and definitions for the command line
 */
 
 #ifndef __TERMINAL
