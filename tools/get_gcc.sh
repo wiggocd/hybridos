@@ -8,6 +8,7 @@ rm tmp.html
 
 curl "$SERVER_URL/$RELEASE_DIR" > tmp.html
 RELEASE_ARCNAME=$(cat tmp.html | grep '.tar.gz\"' | tail -1 | sed -e 's/^[^-]*href=\"//' -e 's/\".*//')
+rm tmp.html
 
 DIRPATH=src/$RELEASE_DIR
 
