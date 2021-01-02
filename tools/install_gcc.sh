@@ -13,33 +13,35 @@ fi
 RELEASENAME=$(ls src/ | grep gcc | tail -1)
 RELEASEDIR=$PWD/src/$RELEASENAME
 
-cd $RELEASEDIR
-if [ -d build ]; then
-    rm -rf build
-fi
-
-mkdir build && \
-cd build && \
-
-# Headers found with: `gcc -print-prog-name=cpp` -v
-
-if [ "$OSTYPE" == "darwin"* ] && [ -d "/Applications/Xcode.app" ]; then
-    if [ -d "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform" ]; then
-        HEADERS="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
-    else
-        HEADERS="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"
+if [ -d "$RELEASEDIR" ]; then
+    cd $RELEASEDIR
+    if [ -d build ]; then
+        rm -rf build
     fi
-else
-    HEADERS="/usr/include"
+
+    mkdir build && \
+    cd build && \
+
+    # Headers found with: `gcc -print-prog-name=cpp` -v
+
+    if [ "$OSTYPE" == "darwin"* ] && [ -d "/Applications/Xcode.app" ]; then
+        if [ -d "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform" ]; then
+            HEADERS="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+        else
+            HEADERS="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"
+        fi
+    else
+        HEADERS="/usr/include"
+    fi
+
+    # CONFIG_FLAGS="--target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --enable-languages=c,c++ --without-headers"
+    CONFIG_FLAGS="--target=$TARGET --prefix="$PREFIX" --with-native-system-header-dir=$HEADERS --with-sysroot --disable-nls --enable-languages=c,c++ --without-headers"
+
+    echo "Configure flags: $CONFIG_FLAGS"
+
+    $RELEASEDIR/configure $CONFIG_FLAGS && \
+    make all-gcc && \
+    # make all-target-libgcc && \
+    sudo make install-gcc
+    # sudo make install-target-libgcc
 fi
-
-# CONFIG_FLAGS="--target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --enable-languages=c,c++ --without-headers"
-CONFIG_FLAGS="--target=$TARGET --prefix="$PREFIX" --with-native-system-header-dir=$HEADERS --with-sysroot --disable-nls --enable-languages=c,c++ --without-headers"
-
-echo "Configure flags: $CONFIG_FLAGS"
-
-$RELEASEDIR/configure $CONFIG_FLAGS && \
-make all-gcc && \
-# make all-target-libgcc && \
-sudo make install-gcc
-# sudo make install-target-libgcc

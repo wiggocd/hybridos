@@ -13,20 +13,22 @@ fi
 RELEASENAME=$(ls src/ | grep binutils | tail -1)
 RELEASEDIR=src/$RELEASENAME
 
-cd $RELEASEDIR
+if [ -d "$RELEASEDIR" ]; then
+    cd $RELEASEDIR
 
-if [ "$OSTYPE" == "darwin"* ] && [ -d "/Applications/Xcode.app" ]; then
-    if [ -d "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform" ]; then
-        HEADERS="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+    if [ "$OSTYPE" == "darwin"* ] && [ -d "/Applications/Xcode.app" ]; then
+        if [ -d "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform" ]; then
+            HEADERS="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+        else
+            HEADERS="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"
+        fi
     else
-        HEADERS="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"
+        HEADERS="/usr/include"
     fi
-else
-    HEADERS="/usr/include"
+
+    CONFIG_FLAGS="--target=$TARGET --prefix="$PREFIX" --with-native-system-header-dir=$HEADERS --with-sysroot --disable-nls --disable-werror"
+
+    ./configure $CONFIG_FLAGS && \
+    make && \
+    sudo make install
 fi
-
-CONFIG_FLAGS="--target=$TARGET --prefix="$PREFIX" --with-native-system-header-dir=$HEADERS --with-sysroot --disable-nls --disable-werror"
-
-./configure $CONFIG_FLAGS && \
-make && \
-sudo make install
