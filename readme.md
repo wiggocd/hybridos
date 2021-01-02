@@ -24,7 +24,7 @@ QEMU packages for Arch Linux: `qemu` `qemu-arch-extra`
 
 
 # Building
-`make linux-tools` - **[Linux only]** Install the required toolchain and cross-compiler for the i686-elf target
+`make install` - Install the build tools
 
 `make` - Build the OS
 
