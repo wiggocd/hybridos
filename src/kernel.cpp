@@ -38,7 +38,7 @@ Data types:
 #endif
 
 #ifndef __i386__
-#error "You may not be using a cross-compiler for the i386 or newer ix86 architecture and could encounter problems."
+#error "You may not be using a cross-compiler for the i686 or newer x86 architecture and could encounter problems."
 #endif
 */
 

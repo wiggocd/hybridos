@@ -35,7 +35,7 @@ if [ -d "$RELEASEDIR" ]; then
     fi
 
     # CONFIG_FLAGS="--target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --enable-languages=c,c++ --without-headers"
-    CONFIG_FLAGS="--target=$TARGET --prefix="$PREFIX" --with-native-system-header-dir=$HEADERS --with-sysroot --disable-nls --enable-languages=c,c++ --without-headers"
+    CONFIG_FLAGS="--target=$TARGET --prefix="$PREFIX" --with-native-system-header-dir=$HEADERS --disable-nls --enable-languages=c,c++ --without-headers"
 
     echo "Configure flags: $CONFIG_FLAGS"
 
