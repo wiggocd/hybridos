@@ -21,8 +21,8 @@ all:
 	./clean_bin.sh && \
 	./create_tree.sh && \
 	cd .. && \
-	${TARGET}-as ${ASM_INPUT} -o ${ASM_OBJ_OUT}
-	${TARGET}-gcc -c ${C_INPUT} -o ${C_OBJ_OUT} ${C_FLAGS}
+	nasm -felf32 ${ASM_INPUT} -o ${ASM_OBJ_OUT} && \
+	${TARGET}-gcc -c ${C_INPUT} -o ${C_OBJ_OUT} ${C_FLAGS} && \
 	${TARGET}-gcc -T ${LD_SCRIPT} ${LD_OBJECTS} -o ${C_BIN_OUT} ${LD_FLAGS} && \
 	make build-image
 

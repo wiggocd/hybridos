@@ -70,7 +70,7 @@ class Terminal {
             write(str, strlen(str));
         }
 
-        Terminal() {};
+        Terminal(void) {};
         Terminal(uint8_t _color, size_t _width, size_t _height) {
             configure(_color, _width, _height);
             initialize();

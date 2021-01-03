@@ -43,17 +43,22 @@ Data types:
 */
 
 #include "stddefex.hpp"
-#include "string.hpp"
+#include "idt.hpp"
 #include "graphics.hpp"
 #include "terminal.hpp"
 
 Terminal tty0;
 
-extern "C" void kernel_main(void) {
+void tty_init(void) {
     uint8_t terminal_color = vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
     size_t terminal_width = VGA_WIDTH_DEFAULT;
     size_t terminal_height = VGA_HEIGHT_DEFAULT;
     tty0 = Terminal(terminal_color, terminal_width, terminal_height);
+}
+
+extern "C" void kernel_main(void) {
+    idt_init();
+    tty_init();
 
     tty0.writestring("Hello, world!");
 

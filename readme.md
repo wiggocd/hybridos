@@ -10,9 +10,9 @@ Attach media from the `releases` section to a virtual machine or write the media
 
 
 # Build Dependencies
-Linux: `gcc` `gmp` `mpfr` `mpc` `curl` `grep` `tar` `grub` `libburn` `libisofs` `libisoburn` `xorriso` `mtools` `grub-mkrescue` `qemu`
+Linux: `gcc` `gmp` `mpfr` `mpc` `nasm` `curl` `grep` `tar` `grub` `libburn` `libisofs` `libisoburn` `xorriso` `mtools` `grub-mkrescue` `qemu`
 
-macOS: `gcc` `automake` `autoconf` `xorriso` `i686-elf-binutils` `i686-elf-gcc` `qemu`
+macOS: `gcc` `nasm` `automake` `autoconf` `xorriso` `i686-elf-binutils` `i686-elf-gcc` `qemu`
 
 Install these dependencies using the package manager for your OS.
 
