@@ -6,7 +6,7 @@
 #define __INTERRUPTS
 
 #include "io.hpp"
-#include "terminal.hpp"
+#include "stdio.h"
 
 void irq0_handler(void) {
     outb(0x20, 0x20); /* EOI */
@@ -85,6 +85,13 @@ void irq15_handler(void) {
 *   From wiki.osdev.org
 */
 
+#define PIC1		    0x20		/* IO base address for main PIC */
+#define PIC2		    0xA0		/* IO base address for secondary PIC */
+#define PIC1_COMMAND	PIC1
+#define PIC1_DATA	    (PIC1+1)
+#define PIC2_COMMAND	PIC2
+#define PIC2_DATA	    (PIC2+1)
+
 struct IDT_entry {
     unsigned short int offset_lowerbits;
     unsigned short int selector;
@@ -93,7 +100,7 @@ struct IDT_entry {
     unsigned short int offset_higherbits;
 };
 
-struct IDT_entry IDT[256];
+IDT_entry IDT[256];
 
 void idt_init(void) {
     extern int load_idt(unsigned long*) asm("load_idt");
@@ -134,16 +141,16 @@ void idt_init(void) {
 	unsigned long idt_ptr[2];
 
     /* Remap the PIC */
-    outb(0x20, 0x11);
-    outb(0xA0, 0x11);
-    outb(0x21, 0x20);
-    outb(0xA1, 40);
-    outb(0x21, 0x04);
-    outb(0xA1, 0x02);
-    outb(0x21, 0x01);
-    outb(0xA1, 0x01);
-    outb(0x21, 0x0);
-    outb(0xA1, 0x0);
+    outb(PIC1, 0x11);       /* Restart main */
+    outb(PIC2, 0x11);       /* Restart secondary */
+    outb(PIC1_DATA, 0x20);  /* Set offset to 32 for main */
+    outb(PIC2_DATA, 40);    /* Set offset to 40 for secondary */
+    outb(PIC1_DATA, 0x04);  /* Connect secondary to PIC2 */
+    outb(PIC2_DATA, 0x02);  /* Redirect to PIC2 */
+    outb(PIC1_DATA, 0x01);  /* Write new config to main */
+    outb(PIC2_DATA, 0x01);  /* Write new config to seconday */
+    outb(PIC1_DATA, 0x0);   /* Mask */
+    outb(PIC2_DATA, 0x0);   /* Mask */
  
 	irq0_address = (unsigned long)irq0; 
 	IDT[32].offset_lowerbits = irq0_address & 0xffff;
@@ -258,8 +265,8 @@ void idt_init(void) {
 	IDT[47].offset_higherbits = (irq15_address & 0xffff0000) >> 16;
  
 	/* Fill the IDT descriptor */
-	idt_address = (unsigned long)IDT ;
-	idt_ptr[0] = (sizeof (struct IDT_entry) * 256) + ((idt_address & 0xffff) << 16);
+	idt_address = (unsigned long)IDT;
+	idt_ptr[0] = (sizeof (IDT_entry) * 256) + ((idt_address & 0xffff) << 16);
 	idt_ptr[1] = idt_address >> 16 ;
  
 	load_idt(idt_ptr);

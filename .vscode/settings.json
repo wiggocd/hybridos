@@ -23,6 +23,7 @@
         "variant": "cpp",
         "source_location": "cpp",
         "string": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "cstdio": "cpp"
     }
 }

@@ -80,7 +80,7 @@ class Terminal {
 Terminal tty[10];
 unsigned int current_tty;
 
-#define current_terminal        return tty[current_tty]
+#define current_terminal        tty[current_tty]
 
 void tty_init(void) {
     uint8_t terminal_color = vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
@@ -91,10 +91,6 @@ void tty_init(void) {
         tty[i] = Terminal(terminal_color, terminal_width, terminal_height);
 
     current_tty = 0;
-}
-
-void printf(const char* str) {
-    current_terminal.writestring(str);
 }
 
 #endif

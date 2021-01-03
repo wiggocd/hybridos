@@ -19,7 +19,7 @@
 ;   Exit _start:
 ;       Set size of _start to current location (.) minus start, instruction and parameters seperated by comma
 
-%include "src/interrupts.asm"
+%include "src/interrupts.s"
 
 ; Define multiboot contants
 ; Magic must be 0x1BADB002 as opposed to 0x2BADB002: the bootloader magic value

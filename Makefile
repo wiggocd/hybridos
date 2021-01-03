@@ -1,7 +1,7 @@
 export PREFIX=/usr/local
 export TARGET=i686-elf
 
-ASM_INPUT=src/boot.asm
+ASM_INPUT=src/boot.s
 C_INPUT=src/kernel.cpp
 
 ASM_OBJ_OUT=bin/obj/boot.o
