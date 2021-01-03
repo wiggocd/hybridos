@@ -1,4 +1,5 @@
 .vscode
 tools/src
+tools/boot/bootimage
 bin
 *.log
