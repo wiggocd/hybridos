@@ -6,6 +6,7 @@
 #ifndef __GRAPHICS
 #define __GRAPHICS
 
+#include <stdint.h>
 #include <stddef.h>
 
 static const uint16_t* VGA_BUFFER_DEFAULT = (uint16_t*) 0xB8000;

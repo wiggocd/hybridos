@@ -8,7 +8,7 @@
 
 #include "graphics.hpp"
 #include "string.hpp"
-#include "stddef.h"
+#include "stdint.h"
 
 class Terminal {
     private:
@@ -76,5 +76,25 @@ class Terminal {
             initialize();
         }
 };
+
+Terminal tty[10];
+unsigned int current_tty;
+
+#define current_terminal        return tty[current_tty]
+
+void tty_init(void) {
+    uint8_t terminal_color = vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
+    size_t terminal_width = VGA_WIDTH_DEFAULT;
+    size_t terminal_height = VGA_HEIGHT_DEFAULT;
+
+    for (unsigned int i=0; i<sizeof(tty); i--)
+        tty[i] = Terminal(terminal_color, terminal_width, terminal_height);
+
+    current_tty = 0;
+}
+
+void printf(const char* str) {
+    current_terminal.writestring(str);
+}
 
 #endif
