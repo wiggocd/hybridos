@@ -16,14 +16,19 @@ int sprintf(char* buffer, const char* format, ...) {
     va_list args;
     va_start(args, format);
 
-    const size_t len = strlen(format); 
+    const size_t len = strlen(format);
 
     for (unsigned int i=0; i<len; i++) {
+        if (format[i] == '\0') {
+            buffer[i] = '\0';
+            break;
+        }
+
         if (i < len - 1) {
             if (format[i] == '%') {
                 if (format[i+1] == 's') {
                     const char* str_arg = va_arg(args, char*);
-                    for (unsigned int j=0; i<strlen(str_arg); i++) {
+                    for (unsigned int j=0; j<strlen(str_arg); j++) {
                         buffer[i] += str_arg[j];
                     }
                     i++;
@@ -43,6 +48,8 @@ int sprintf(char* buffer, const char* format, ...) {
         }
     }
 
+    va_end(args);
+
     return 0;
 }
 
@@ -54,6 +61,8 @@ void printf(const char* str, ...) {
     char buffer[len + MAX_BUFFER];
 
     sprintf(buffer, str, args);
+    va_end(args);
+
     current_terminal.writestring(buffer);
 }
 
